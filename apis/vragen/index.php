@@ -43,9 +43,24 @@ $event = $events[array_rand($events)];
 
 list($year, $event, $eventType) = explode(" - ", $event);
 
+switch ($eventType) {
+    case "Overleden":
+        $question = "In welk jaar overleed " . $event . "?";
+        break;
+    case "Geboren":
+        $question = "In welk jaar werd " . $event . ", geboren?";
+        break;
+    default:
+        $question = $event . ". In welk jaar was dit?";
+}
+
+header("Access-Control-Allow-Origin: *");
+header("Content-type: application/json");
+
 echo json_encode([
     "date" => $day . " " . $month,
     "year" => $year,
     "event" => $event,
     "eventType" => $eventType,
+    "question" => $question,
 ]);
