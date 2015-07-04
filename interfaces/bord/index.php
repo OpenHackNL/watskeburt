@@ -12,10 +12,26 @@
 
         <script>
         var data = null;
+        var isAnwserShowen = false;
         $(document).ready(function(){
             // $("#jqtest").text("jQuery is available");
             // showQuestion();
             getPostData();
+            window.addEventListener("click", function(){
+                $.get("https://watskeburt-jgroenen-1.c9.io/apis/spel/", function (data) {
+                    var best = {
+                        answer: "",
+                        diff: 100000
+                    };
+                    $.each(data.answers, function (key, value) {
+                        if (Math.abs(data.year - value) < best.diff) {
+                            best.answer = value;
+                            best.diff = Math.abs(data.year - value);
+                        }
+                    });
+                    $("#show_question").html(data.year + "<br>Best: " + best.answer);
+                });
+            });
         });
         
         function showQuestion(question){            
@@ -40,30 +56,6 @@
                 showQuestion(data.question);
                 // alert("Data: " + data + "\nStatus: " + status);
             });
-        }
-        
-        function getQuestion(){
-            var data = {"date":"4 juli",
-                        "year":"1831",
-                        "question":"James Monroe (73), vijfde president van de Verenigde Staten",                       
-                        "event":"James Monroe (73), vijfde president van de Verenigde Staten",
-                        "eventType":"Overleden",
-                        "answers":[],
-                        "round":1};
-            
-            return data;
-            // var question = null;
-            $.post("serverScript.php", function(data, status){              
-                showQuestion(data.question);
-                // alert("Data: " + data + "\nStatus: " + status);
-            });
-            
-        }
-
-        function showAnswer(){
-            if (data != null){
-                $("#rightAnswer").text(data.year);
-            }
         }
         </script>
 
@@ -200,11 +192,6 @@
                     <h3 class="keburtenis">Keburtenis</h3>
                     <p class="question" id="show_question"></p>
                     <p class="answer" id="show_answer"></p>
-
-                    <div id="show_answer">
-                        The Answer is:
-                        <div id="rightAnswer"></div>
-                    </div>
                 </div>
             </div>
         </div>
