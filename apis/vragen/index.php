@@ -34,7 +34,7 @@ $eventType = "";
 foreach ($lines as $line) {
     if (preg_match("/^== [a-zA-Z]* ==$/", $line)) {
         $eventType = trim(str_replace("==", "", $line));
-    } else if (preg_match("/^[0-9]{4} -/", $line)) {
+    } else if (preg_match("/^[0-9]{4} -/", $line) && $eventType === "Gebeurtenissen") {
         $events[] = $line . " - " . $eventType;
     }
 }
